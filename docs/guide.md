@@ -50,6 +50,39 @@ before custom option, you should known what adminlte has used.
 - avatar_field
 - show_avatar
 
+## ModelAdmin
+- make change_list filter support select2
+- custom placeholder for search_fields
+
+```python
+# adminlte/admin.py
+class ModelAdmin(admin.ModelAdmin):
+  select2_list_filter = ()
+  search_field_placeholder = ''
+
+  class Media:
+    css = {
+      "all": ("admin/components/select2/dist/css/select2.min.css",)
+    }
+    js = (
+      "admin/components/select2/dist/js/select2.min.js",
+    )
+
+  def changelist_view(self, request, extra_context=None):
+    view = super().changelist_view(request, extra_context)
+    cl = view.context_data.get('cl')
+    cl.search_field_placeholder = self.search_field_placeholder
+    filter_specs = cl.filter_specs
+
+    for index, filter_spec in enumerate(filter_specs):
+      if filter_spec.field_path in self.select2_list_filter:
+        # flag to use select2
+        filter_spec.display_select2 = True
+        cl.filter_specs[index] = filter_spec
+    view.context_data['cl'] = cl
+    return view
+```
+
 ## Widgets
 
 ### AdminlteSelect
@@ -169,28 +202,81 @@ url_name=video_parsed_changelist, app_names=['admin'], namespaces=['admin'], rou
 django url name = namespaces:url_name
 
 ## settings
+in your setting.py `ADMINLTE_SETTINGS`
 
+### demo
+Misleading demo features disabling/enabling
 ```python
-# in your setting.py
-# this is the default settings
-# what the setting work for? [You can see](https://github.com/wuyue92tree/django-adminlte-ui/pull/6)
-
 ADMINLTE_SETTINGS = {
     'demo': True,
+}
+```
+
+### search_form
+Search form disabling/enabling
+
+```python
+ADMINLTE_SETTINGS = {
     'search_form': True,
-    # 'skin': 'blue',
-    # 'copyright': '<a href="https://github.com/wuyue92tree/django-adminlte-ui/tree/'+version+'">django-adminlte-ui '+version+'</a>',
-    # 'navigation_expanded': True,
+}
+```
 
-    # if you are use custom menu, which will not effective below!
+### skin
+Skin choice
+```python
+ADMINLTE_SETTINGS = {
+    'skin': True,
+}
+```
 
-    # 'show_apps': ['django_admin_settings', 'auth', 'main'],
-    # 'main_navigation_app': 'django_admin_settings',
-    # 'icons': {
-    #     'myapp': {
-    #         'shops': 'fa-shopping-cart',
-    #         'products': 'fa-dollar',
-    #     }
-    # }
+### copyright
+Customer-specific copyright notice
+```python
+ADMINLTE_SETTINGS = {
+    'copyright': 'John Smith',
+}
+```
+
+### navigation_expanded
+Navigation expanded feature, making navigation elements not being hidden under openable menu
+```python
+ADMINLTE_SETTINGS = {
+    'navigation_expanded': True,
+}
+```
+
+### show_apps
+```python
+ADMINLTE_SETTINGS = {
+    'show_apps': ['django_admin_settings', 'auth', 'main'],
+}
+```
+### main_navigation_app
+Main navigation app feature, where app models are put on top of the menu
+```python
+ADMINLTE_SETTINGS = {
+    'main_navigation_app': 'django_admin_settings',
+}
+```
+
+### apps
+Modify apps icon & order apps/models
+
+```python
+ADMINLTE_SETTINGS = {
+    'apps': {
+        'example-app': {
+            'icon': 'fa-desktop',
+            'models': {
+                'example-model': {
+                    'icon': 'fa-archive'
+                },
+                'example-model1': {}
+            }
+        },
+        'auth': {
+            'icon': 'fa-users'
+        }
+    }
 }
 ```

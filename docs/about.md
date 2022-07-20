@@ -1,5 +1,31 @@
 # ChangeLog
 
+## [v1.7.2](https://github.com/wuyue92tree/django-adminlte-ui/releases/tag/1.7.2)
+- fix submit_row issue & make change form tools float
+- improve fieldset.html & fix #15
+- fix translate in `password_change_form.html`
+- update `app.css`
+
+## [v1.7.1](https://github.com/wuyue92tree/django-adminlte-ui/releases/tag/1.7.1)
+- fix exception when delete in changelist_view
+- update docs
+
+## [v1.7.0](https://github.com/wuyue92tree/django-adminlte-ui/releases/tag/1.7.0)
+- make previous & next button effective on change_list.html
+- use select2 make admin filter searchable
+- add search_field_placeholder for search_fields
+- use `github actions` replace `travis`
+
+## [v1.6.1](https://github.com/wuyue92tree/django-adminlte-ui/releases/tag/1.6.1)
+- fix app in ADMINLTE_SETTINGS but current_user has not perm
+- fix model in ADMINLTE_SETTINGS but current_user has not perm
+
+## [v1.6.0](https://github.com/wuyue92tree/django-adminlte-ui/releases/tag/1.6.0)
+
+- fix #26 case by modify list_per_page with '…' str
+- add apps options in ADMINLTE_SETTINGS for menu icon & menu order
+- update adminlte from 2.3.6 -> 2.4.18
+
 ## [v1.5.1](https://github.com/wuyue92tree/django-adminlte-ui/releases/tag/1.5.1)
 
 - fix template tag for Django 3;
